@@ -1,0 +1,87 @@
+#!/usr/bin/perl -w
+
+use strict;
+use warnings;
+use Math::Complex;
+use Math::Trig;
+
+my $num_args = $#ARGV + 1;
+if ($num_args < 2)
+{
+    print "USAGE\n\t\t./205IQ u o [IQ1] [IQ2]\n\nDESCRIPTION\n\t\tu\tpredetermined mean\n\t\to\tpredetermined standard deviation\n\t\tIQ1\tminimum IQ\n\t\tIQ2\tmaximum IQ\n";
+    exit 84;
+}
+for (my $i = 0; $i < $num_args; $i++)
+{
+    if ($ARGV[$i] !~ /^[0-9]*$/)
+    {
+	exit 84;
+    }
+    elsif ($i > 1 && $ARGV[$i] > 200)
+    {
+	exit 84;
+    }
+    elsif ($ARGV[$i] < 0)
+    {
+	exit 84;
+    }
+}
+if ($num_args == 2)
+{
+    for (my $i = 0; $i <= 200; $i++)
+    {
+	my $z = ($i - $ARGV[0]) / $ARGV[1];
+	my $qi = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$z ** 2) / 2);
+	$qi *= 100;
+	printf("%d %.2f\n", $i, $qi);
+    }
+}
+elsif ($num_args > 2)
+{
+    my $t = 0;
+    my $z = -$ARGV[0] / $ARGV[1];
+    my $qi = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$z ** 2) / 2);
+    my $prob = $qi;
+    my $t2;
+    my $zb;
+    my $qi2;
+    while ($t <= $ARGV[2])
+    {
+	$t2 = $t - 0.5;
+	$zb = ($t2 - $ARGV[0]) / $ARGV[1];
+	$z = ($t - $ARGV[0]) / $ARGV[1];
+	$qi2 = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$zb ** 2) / 2);
+	$qi = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$z ** 2) / 2);
+	$prob += (((2 * $qi) + (4 * $qi2)) / 6);
+	$t = $t + 1;
+    }
+    $z = ($ARGV[2] - $ARGV[0]) / $ARGV[1];
+    $qi = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$z ** 2) / 2);
+    $prob -= ((1 / 6) * $qi);
+    $prob *= 100;
+    if ($num_args == 3)
+    {
+	printf("%.1f%% of people have a IQ inferior to 90\n", $prob);
+	exit 0;
+    }
+    my $prob_min = $prob;
+    $t = 0;
+    $z = -$ARGV[0] / $ARGV[1];
+    $qi = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$z ** 2) / 2);
+    $prob = $qi;
+    while ($t <= $ARGV[3])
+    {
+	$t2 = $t - 0.5;
+	$zb = ($t2 - $ARGV[0]) / $ARGV[1];
+	$z = ($t - $ARGV[0]) / $ARGV[1];
+	$qi2 = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$zb ** 2) / 2);
+	$qi = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$z ** 2) / 2);
+	$prob += (((2 * $qi) + (4 * $qi2)) / 6);
+	$t = $t + 1;
+    }
+    $z = ($ARGV[3] - $ARGV[0]) / $ARGV[1];
+    $qi = (1 / ($ARGV[1] * sqrt(2 * pi))) * exp((-$z ** 2) / 2);
+    $prob -= ((1 / 6) * $qi);
+    $prob *= 100;
+    printf("%.1f%% of people have a IQ between %d and %d\n", $prob - $prob_min, $ARGV[2], $ARGV[3]);
+}
