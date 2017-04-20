@@ -17,11 +17,11 @@ for (my $i = 0; $i < $num_args; $i++)
     {
 	exit 84;
     }
-    elsif ($i > 1 && $ARGV[$i] > 200)
+    elsif ($ARGV[$i] > 200)
     {
 	exit 84;
     }
-    elsif ($ARGV[$i] <= 0)
+    elsif ($ARGV[$i] < 0)
     {
 	exit 84;
     }
