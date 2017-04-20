@@ -6,7 +6,7 @@ use Math::Complex;
 use Math::Trig;
 
 my $num_args = $#ARGV + 1;
-if ($num_args < 2 || $num_args > 3)
+if ($num_args < 2 || $num_args > 4)
 {
     print "USAGE\n\t\t./205IQ u o [IQ1] [IQ2]\n\nDESCRIPTION\n\t\tu\tpredetermined mean\n\t\to\tpredetermined standard deviation\n\t\tIQ1\tminimum IQ\n\t\tIQ2\tmaximum IQ\n";
     exit 84;
@@ -21,7 +21,7 @@ for (my $i = 0; $i < $num_args; $i++)
     {
 	exit 84;
     }
-    elsif ($ARGV[$i] < 0)
+    elsif ($ARGV[$i] <= 0)
     {
 	exit 84;
     }
