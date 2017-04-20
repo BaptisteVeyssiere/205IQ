@@ -6,7 +6,7 @@ use Math::Complex;
 use Math::Trig;
 
 my $num_args = $#ARGV + 1;
-if ($num_args < 2)
+if ($num_args < 2 || $num_args > 3)
 {
     print "USAGE\n\t\t./205IQ u o [IQ1] [IQ2]\n\nDESCRIPTION\n\t\tu\tpredetermined mean\n\t\to\tpredetermined standard deviation\n\t\tIQ1\tminimum IQ\n\t\tIQ2\tmaximum IQ\n";
     exit 84;
@@ -61,7 +61,7 @@ elsif ($num_args > 2)
     $prob *= 100;
     if ($num_args == 3)
     {
-	printf("%.1f%% of people have a IQ inferior to 90\n", $prob);
+	printf("%.1f%% of people have a IQ inferior to %d\n", $prob, $ARGV[2]);
 	exit 0;
     }
     my $prob_min = $prob;
